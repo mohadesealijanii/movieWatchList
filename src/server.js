@@ -11,7 +11,13 @@ const app = express();
 app.get("/hello", (req, res) => {
   res.json({ message: "Hello World!" });
 });
-
+app.use(express.json());
+app.use((req, res, next) => {
+  console.log(req.method, req.url);
+  console.log(req.headers["content-type"]);
+  console.log(req.body);
+  next();
+})
 app.use("/movies", movieRoutes);
 app.use("/auth", authRoutes);
 

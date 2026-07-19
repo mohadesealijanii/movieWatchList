@@ -1,8 +1,11 @@
+import { prisma } from "../config/db.js"
+import {bcrypt} from "bcrypt"
+
 const register = async (req, res) => {
     const { name, email, password } = req.body
-    
-    const userExists = await prisma.user.findUnique({
-        where: {email: email}
+
+    const userExists = await prisma.user.findFirst({
+        where: { email: email }
     })
 
     if (userExists) {
@@ -12,8 +15,7 @@ const register = async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcript.hash(passwordm, salt)
-
+    const hashedPassword = await bcrypt.hash(password, salt)
     const user = await prisma.user.create({
         data: {
             name,
@@ -25,17 +27,17 @@ const register = async (req, res) => {
     res.status(201).json({
         status: "success",
         data: {
-        user: {
-            id: user.id,
-            name,
-            email
+            user: {
+                id: user.id,
+                name,
+                email
+            }
         }
-    }
     })
-       
+
 }
 
-  
 
 
-export {register}
+
+export { register }
