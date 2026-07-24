@@ -1,6 +1,6 @@
 import { prisma } from "../config/db.js";
-import bcrypt from "bcrypt";
-
+import bcrypt from "bcryptjs";
+import { generateToken } from "../utils/generateToken.js";
 const register = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -36,10 +36,10 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-
   const user = await prisma.user.findFirst({
     where: { email },
-  });
+  })
+  const token = generateToken(user.id, res)
 
   if (!user) {
     return res
@@ -56,7 +56,27 @@ const login = async (req, res) => {
 
   return res
     .status(201)
-    .json({ status: "success", message: "you successfully logged in!" });
+    .json({
+      status: "success", message: "you successfully logged in!", data: {
+        user: {
+        id: user.id,
+        email
+      },
+      token
+      },
+    });
 };
 
-export { register, login };
+const logout = async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  })
+
+  res.status(200).json({
+    status: "success",
+    message: "Loggesd out succesfully"
+  })
+}
+
+export { register, login, logout };

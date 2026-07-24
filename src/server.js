@@ -1,25 +1,21 @@
 import express from "express";
 import { config } from "dotenv";
 import movieRoutes from "./routes/movieRoutes.js";
-import { connectDB, disconnectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js"
+import watchlistRoutes from "./routes/watchlistRoutes.js"
+import { connectDB, disconnectDB } from "./config/db.js";
 
 config()
 connectDB()
 const app = express();
 
-app.get("/hello", (req, res) => {
-  res.json({ message: "Hello World!" });
-});
 app.use(express.json());
 app.use((req, res, next) => {
-  console.log(req.method, req.url);
-  console.log(req.headers["content-type"]);
-  console.log(req.body);
   next();
 })
 app.use("/movies", movieRoutes);
 app.use("/auth", authRoutes);
+app.use("/watchlist", watchlistRoutes);
 
 const PORT = 5000;
 

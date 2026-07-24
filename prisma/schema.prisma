@@ -1,7 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
   provider = "prisma-client-js"
@@ -46,13 +42,15 @@ model WatchListItem {
   movieId   String
   status    WatchlistStatus @default(PLANNED)
   rating    Int? 
-  notes     String?
+  note     String?
   createdAt DateTime @default(now())  
   updateddAt DateTime @default(now())  
 
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   movie Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, movieId])
 }
 
 enum WatchlistStatus {
