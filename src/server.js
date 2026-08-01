@@ -13,6 +13,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   next();
 })
+
 app.use("/movies", movieRoutes);
 app.use("/auth", authRoutes);
 app.use("/watchlist", watchlistRoutes);

@@ -23,7 +23,7 @@ CREATE TABLE "WatchListItem" (
     "movieId" TEXT NOT NULL,
     "status" "WatchlistStatus" NOT NULL DEFAULT 'PLANNED',
     "rating" INTEGER,
-    "notes" TEXT,
+    "note" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updateddAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

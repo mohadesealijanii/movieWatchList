@@ -39,7 +39,8 @@ const login = async (req, res) => {
   const user = await prisma.user.findFirst({
     where: { email },
   })
-  const token = generateToken(user.id, res)
+  console.log(user)
+  const token = generateToken(user?.id, res)
 
   if (!user) {
     return res
